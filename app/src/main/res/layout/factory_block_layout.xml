@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.aven.projekt2.FactoryBlock
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <data>
+        <variable
+            name="block"
+            type="com.example.aven.projekt2.Block"
+            tools:ignore="MissingPrefix" />
+    </data>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="368dp"
+        android:layout_height="14dp"
+        android:layout_alignLeft="@+id/blockName"
+        android:layout_alignStart="@+id/blockName"
+        android:layout_below="@+id/addNumber"
+        android:layout_marginTop="16dp"
+        android:indeterminate="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberOfBlocks" />
+
+    <TextView
+        android:id="@+id/blockName"
+        android:layout_width="94dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@{block.name}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/addNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/blockName"
+        android:layout_marginLeft="92dp"
+        android:layout_marginStart="92dp"
+        android:layout_toEndOf="@+id/blockName"
+        android:layout_toRightOf="@+id/blockName"
+        android:text="+"
+        app:layout_constraintStart_toEndOf="@+id/blockName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/subNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/addNumber"
+        android:layout_alignBottom="@+id/addNumber"
+        android:layout_toEndOf="@+id/addNumber"
+        android:layout_toRightOf="@+id/addNumber"
+        android:text="-"
+        app:layout_constraintStart_toEndOf="@+id/addNumber"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numberOfBlocks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/blockName"
+        android:layout_alignStart="@+id/blockName"
+        android:layout_below="@+id/blockName"
+        android:text="@{block.stateString}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blockName" />
+</com.example.aven.projekt2.FactoryBlock>
