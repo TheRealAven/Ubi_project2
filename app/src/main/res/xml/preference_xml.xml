@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <CheckBoxPreference
+        android:key="pref_active"
+        android:title="Show active only"
+        android:summary="Decide if you want to see inactive projects"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="pref_block_done"
+        android:title="Pull finished block down"
+        android:summary="Puts done blocks at the end of the list"
+        android:defaultValue="false" />
+    <EditTextPreference
+        android:key="pref_url_prefix"
+        android:title="URL prefix: "
+        android:defaultValue="http://fcds.cs.put.poznan.pl/MyWeb/BL/" />
 </PreferenceScreen>

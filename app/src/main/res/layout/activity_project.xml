@@ -8,11 +8,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.aven.projekt2.ProjectActivity">
 
-    <data>
-        <variable
-            name="dataList"
-            type="ArrayList"
-            tools:ignore="MissingPrefix" />
-    </data>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:title="@string/app_name"
+        app:titleTextColor="#ffff"
+        app:navigationIcon="@drawable/navigation_arrow"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    <ListView
+        android:id="@+id/projectElementsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

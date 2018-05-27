@@ -5,19 +5,32 @@ import org.xmlpull.v1.XmlPullParser
 import java.io.InputStream
 import java.net.URL
 import android.R.attr.entries
-
+import android.content.Context
+import android.databinding.ObservableArrayList
 
 
 /**
  * Created by Aven on 2018-05-14.
  */
-class XMLParser {
+class XMLParser(c: Context) {
     private val ns: String?=null
+    private var db: DatabaseManager = DatabaseManager(c)
 
-    fun parseFromLink(url: String): ArrayList<Block>{
-        var effectList: ArrayList<Block> = ArrayList()
+    fun parseFromLink(url: String): ObservableArrayList<Block>{
+        var effectList: ObservableArrayList<Block> = ObservableArrayList()
         val parser: XmlPullParser = Xml.newPullParser()
         val inputS: InputStream = URL(url).openStream()
+
+        try{
+            db.createDataBase()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+        try {
+            db.openDataBase()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
 
         try{
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -98,7 +111,11 @@ class XMLParser {
             }
         }
 
-        return Block("","", itemColor, itemId, itemType, 0, itemNum)
+        var colorName = db.fetchColorName(itemColor)
+        var name = db.fetchName(itemId)
+        var typeName = db.fetchTypeName(itemType)
+
+        return Block(name, typeName, itemColor, itemId, itemType, 0, itemNum, colorName, db.fetchCode(db.getREALBlockId(itemId), itemColor))
     }
 
     fun skip(parser: XmlPullParser) {
