@@ -8,7 +8,7 @@ import android.view.View
 import android.support.v7.widget.Toolbar
 import kotlinx.android.synthetic.main.activity_project.*
 
-class ProjectActivity() : AppCompatActivity() {
+class ProjectActivity() : AppCompatActivity(), ExportDialog.OnExportDialogInputListener {
     var currentProject: Project? = null
 
     var adapter: BlockListAdapter? = null
@@ -44,6 +44,15 @@ class ProjectActivity() : AppCompatActivity() {
         adapter = BlockListAdapter(currentProject!!.listOfNeededBlocks, this)
 
         projectElementsList.adapter=adapter
+
+        fabExport.setOnClickListener{
+            var dialog = ExportDialog()
+            dialog.show(fragmentManager, "ExportDialog")
+        }
+    }
+
+    override fun onInput(nameInput: String) {
+        XMLParser(this).exportToXMLFile(currentProject!!, this.filesDir, "$nameInput.xml")
     }
 
     override fun finish() {

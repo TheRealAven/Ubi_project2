@@ -7,6 +7,16 @@ import java.net.URL
 import android.R.attr.entries
 import android.content.Context
 import android.databinding.ObservableArrayList
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import java.io.File
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 
 /**
@@ -15,6 +25,51 @@ import android.databinding.ObservableArrayList
 class XMLParser(c: Context) {
     private val ns: String?=null
     private var db: DatabaseManager = DatabaseManager(c)
+
+    fun exportToXMLFile(project: Project, path: File, fileName: String){
+        val docBuilder: DocumentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val doc: Document = docBuilder.newDocument()
+
+        val rootElement: Element = doc.createElement("INVENTORY")
+
+
+        for(block in project.listOfNeededBlocks){
+            if(!block.done){
+                var itemNode: Element = doc.createElement("ITEM")
+                var itemType: Element = doc.createElement("ITEMTYPE")
+                var itemId: Element = doc.createElement("ITEMID")
+                var itemColor: Element = doc.createElement("COLOR")
+                var itemQty: Element = doc.createElement("QTYFILLED")
+
+
+                itemType.appendChild(doc.createTextNode(block.blockTypeCode))
+                itemNode.appendChild(itemType)
+
+                itemId.appendChild(doc.createTextNode(block.blockIdCode))
+                itemNode.appendChild(itemId)
+
+                itemColor.appendChild(doc.createTextNode(block.colorCode.toString()))
+                itemNode.appendChild(itemColor)
+
+                itemQty.appendChild(doc.createTextNode((block.maxNumber-block.actualNumber).toString()))
+                itemNode.appendChild(itemQty)
+
+                rootElement.appendChild(itemNode)
+            }
+        }
+
+        val transformer: Transformer = TransformerFactory.newInstance().newTransformer()
+
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2")
+
+        val outDir = File(path, "Output")
+        outDir.mkdir()
+
+        val file = File(outDir, fileName)
+
+        transformer.transform(DOMSource(doc), StreamResult(file))
+    }
 
     fun parseFromLink(url: String): ObservableArrayList<Block>{
         var effectList: ObservableArrayList<Block> = ObservableArrayList()
