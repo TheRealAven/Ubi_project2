@@ -19,11 +19,12 @@ class BlockListAdapter: ArrayAdapter<Block> {
     // View lookup cache
     private class ViewHolder {
         internal var txtName: TextView? = null
-        internal var txtState: TextView? = null
-        internal var status: ProgressBar? = null
-        internal var addB: Button? = null
-        internal var subB: Button? = null
-        internal var imageV: ImageView? = null
+        internal var txtOpis: TextView? = null
+        internal var txtPlevel: TextView? = null
+        internal var txtTra: TextView? = null
+        internal var txtIng: TextView? = null
+        internal var txtCTime: TextView? = null
+        internal var txtDTime: TextView? = null
     }
 
     constructor(data: ArrayList<Block>, context: Context):super(context, R.layout.factory_block_layout, data) {
@@ -45,7 +46,7 @@ class BlockListAdapter: ArrayAdapter<Block> {
         sharedPref.getBoolean("pref_block_done", sort)
 
         if(sort){
-            dataSet.sortWith(compareBy { it.done })
+            dataSet.sortWith(compareBy { it.nazwa })
         }
 
 
@@ -55,11 +56,12 @@ class BlockListAdapter: ArrayAdapter<Block> {
             val inflater = LayoutInflater.from(context)
             convertView = inflater.inflate(R.layout.factory_block_layout, parent, false)
             viewHolder.txtName = convertView!!.findViewById(R.id.blockName)
-            viewHolder.txtState = convertView!!.findViewById(R.id.numberOfBlocks)
-            viewHolder.addB = convertView!!.findViewById(R.id.addNumber)
-            viewHolder.subB = convertView!!.findViewById(R.id.subNumber)
-            viewHolder.status = convertView!!.findViewById(R.id.progressBar)
-            viewHolder.imageV = convertView!!.findViewById(R.id.blockImageView)
+            viewHolder.txtCTime = convertView!!.findViewById(R.id.ctime)
+            viewHolder.txtDTime = convertView!!.findViewById(R.id.dtime)
+            viewHolder.txtPlevel = convertView!!.findViewById(R.id.plevel)
+            viewHolder.txtIng = convertView!!.findViewById(R.id.ing)
+            viewHolder.txtOpis = convertView!!.findViewById(R.id.desc)
+            viewHolder.txtTra = convertView!!.findViewById(R.id.tra)
             convertView!!.setTag(viewHolder)
         } else {
             viewHolder = convertView!!.tag as ViewHolder
@@ -67,30 +69,15 @@ class BlockListAdapter: ArrayAdapter<Block> {
 
         lastPosition = position
 
-        viewHolder.txtName!!.setText(dataModel!!.name)
-        viewHolder.txtState!!.setText(dataModel!!.stateString)
-        viewHolder.status!!.max = dataModel!!.maxNumber
-        viewHolder.status!!.progress = dataModel!!.actualNumber
-        var urlString = "https://www.lego.com/service/bricks/5/2/${dataModel!!.imgCode}"
-        if(dataModel!!.bitmap==null) {
-            var imageLoader = ImageAsyncDownloader(viewHolder.imageV!!, dataModel!!)
-            imageLoader.execute(urlString)
-        }else{
-            viewHolder.imageV!!.setImageBitmap(dataModel!!.bitmap)
-        }
+        viewHolder.txtName!!.setText(dataModel!!.nazwa)
+        viewHolder.txtCTime!!.setText(dataModel!!.ctime)
+        viewHolder.txtDTime!!.setText(dataModel!!.dtime)
+        viewHolder.txtOpis!!.setText(dataModel!!.opis)
+        viewHolder.txtTra!!.setText(dataModel!!.tradycja)
+        viewHolder.txtIng!!.setText(dataModel!!.koszt)
+        viewHolder.txtPlevel!!.setText(dataModel!!.plevel)
 
-        viewHolder.addB!!.setOnClickListener {
-            dataModel!!.addToCurrent()
-            viewHolder.status!!.max = dataModel!!.maxNumber
-            viewHolder.status!!.progress = dataModel!!.actualNumber
-            viewHolder.txtState!!.setText(dataModel!!.stateString)
-        }
-        viewHolder.subB!!.setOnClickListener {
-            dataModel!!.subFromCurrent()
-            viewHolder.status!!.max = dataModel!!.maxNumber
-            viewHolder.status!!.progress = dataModel!!.actualNumber
-            viewHolder.txtState!!.setText(dataModel!!.stateString)
-        }
+
         // Return the completed view to render on screen
         return convertView
     }

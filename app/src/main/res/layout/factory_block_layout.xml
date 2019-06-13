@@ -6,65 +6,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="368dp"
-        android:layout_height="14dp"
-        android:layout_alignStart="@+id/numberOfBlocks"
-        android:layout_below="@+id/numberOfBlocks"
-        android:indeterminate="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberOfBlocks" />
-
     <TextView
         android:id="@+id/blockName"
         android:layout_width="94dp"
-        android:layout_height="38dp"
+        android:layout_height="25dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/addNumber"
+    <TextView
+        android:id="@+id/ing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/progressBar"
         android:layout_below="@+id/blockName"
-        android:text="+"
-        app:layout_constraintStart_toEndOf="@+id/blockName"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/subNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/addNumber"
-        android:layout_alignStart="@+id/addNumber"
-        android:text="-"
-        app:layout_constraintStart_toEndOf="@+id/addNumber"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
+        android:text="Ing" />
 
     <TextView
-        android:id="@+id/numberOfBlocks"
+        android:id="@+id/ctime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addNumber"
-        android:layout_alignStart="@+id/blockName"
-        android:text="State"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blockName" />
+        android:layout_below="@+id/ing"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
+        android:text="Ctime " />
 
-    <ImageView
-        android:id="@+id/blockImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignTop="@+id/blockName"
-        android:layout_marginStart="28dp"
-        android:layout_toEndOf="@+id/blockName"
-        app:srcCompat="@mipmap/ic_launcher" />
+    <TextView
+        android:id="@+id/dtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ctime"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="214dp"
+        android:layout_marginTop="89dp"
+        android:text="Dtime " />
+
+
+    <TextView
+        android:id="@+id/plevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ctime"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
+        android:text="Plevel " />
+
+    <TextView
+        android:id="@+id/tra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="224dp"
+        android:text="Tra " />
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/plevel"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="10dp"
+        android:text="Desc " />
 </RelativeLayout>

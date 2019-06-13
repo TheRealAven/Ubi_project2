@@ -23,7 +23,7 @@ class NewProjectDialog: DialogFragment() {
     val TAG: String = "DialogFragment"
 
     interface OnDialogInputListener{
-        fun onInput(nameInput: String, url: String)
+        fun onInput(nameInput: String)
     }
     var listener: OnDialogInputListener? = null
 
@@ -31,16 +31,14 @@ class NewProjectDialog: DialogFragment() {
         var view = inflater!!.inflate(R.layout.dialog_layout, container, false)
 
         var sharedPref = this.activity.getSharedPreferences("APP_SETTINGS", MODE_PRIVATE)
-        view.findViewById<EditText>(R.id.urlEdit).setText(sharedPref.getString("pref_url_prefix", ""))
 
         view.findViewById<Button>(R.id.cancelButton).setOnClickListener {
             dialog.dismiss()
         }
 
         view.findViewById<Button>(R.id.okButton).setOnClickListener {
-            var inputUrl = urlEdit.text.toString()
             var name = nameEdit.text.toString()
-            listener?.onInput(name, inputUrl)
+            listener?.onInput(name)
 
             dialog.dismiss()
         }

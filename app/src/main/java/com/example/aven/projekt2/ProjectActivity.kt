@@ -52,23 +52,20 @@ class ProjectActivity() : AppCompatActivity(), ExportDialog.OnExportDialogInputL
     }
 
     override fun onInput(nameInput: String) {
-        XMLParser(this).exportToXMLFile(currentProject!!, this.filesDir, "$nameInput.xml")
+        currentProject!!.addBlock(db.fetchSpell(nameInput.toInt())?: Block())
     }
 
     override fun finish() {
-        currentProject!!.refreshProjectStatus()
         db.saveProject(currentProject!!)
         super.finish()
     }
 
     override fun onPause() {
-        currentProject!!.refreshProjectStatus()
         db.saveProject(currentProject!!)
         super.onPause()
     }
 
     override fun onDestroy() {
-        currentProject!!.refreshProjectStatus()
         db.saveProject(currentProject!!)
         super.onDestroy()
     }

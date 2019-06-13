@@ -18,7 +18,7 @@ class DatabaseManager: SQLiteOpenHelper {
 
     private val DB_PATH = "/data/data/com.example.aven.projekt2/databases/"
 
-    private val DB_NAME = "BrickListDB.db"
+    private val DB_NAME = "spells.db"
 
     private var myDataBase: SQLiteDatabase? = null
 
@@ -30,7 +30,7 @@ class DatabaseManager: SQLiteOpenHelper {
      * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
      * @param context
      */
-    constructor(context: Context):super(context, "BrickListDB.db", null, 4){
+    constructor(context: Context):super(context, "spells.db", null, 4){
         this.myContext = context
     }
 
@@ -155,150 +155,86 @@ class DatabaseManager: SQLiteOpenHelper {
     // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
     // to you to create adapters for your views.
 
-    fun fetchName(code: String): String{
-        val query = "SELECT NAME FROM Parts WHERE CODE LIKE \"$code\""
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        var name: String = ""
-        if(cursor.moveToFirst()){
-            name = cursor.getString(0)
-        }
-        cursor.close()
-        return name
-    }
-
-    fun fetchColorName(colorId: Int): String{
-        val query = "SELECT NAME FROM Colors WHERE CODE=$colorId"
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        var colorName: String = ""
-        if(cursor.moveToFirst()){
-            colorName = cursor.getString(0)
-        }
-        cursor.close()
-        return colorName
-    }
-
-    fun fetchTypeName(code: String): String{
-        val query = "SELECT NAME FROM ItemTypes WHERE CODE LIKE \"$code\""
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        var typeName: String = ""
-        if(cursor.moveToFirst()){
-            typeName = cursor.getString(0)
-        }
-        cursor.close()
-        return typeName
-    }
-
     fun fetchProjects(): ObservableArrayList<Project>{
-        val query = "SELECT _id, Name, Active FROM Inventories"
+        val query = "SELECT * FROM spellbooks"
         val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         var tempList = ObservableArrayList<Project>()
         if(cursor.moveToFirst()) {
-            tempList.add(Project(cursor.getString(1), cursor.getInt(0), cursor.getInt(2)))
+            tempList.add(Project(cursor.getString(1), cursor.getInt(0)))
         }
         while(cursor.moveToNext()){
-            tempList.add(Project(cursor.getString(1), cursor.getInt(0), cursor.getInt(2)))
+            tempList.add(Project(cursor.getString(1), cursor.getInt(0)))
         }
         cursor.close()
         return tempList
     }
 
-    fun fetchCode(itemId: Int, colorId: Int): String{
-        val query = "SELECT Code FROM Codes WHERE ItemID=$itemId AND ColorID=$colorId"
+    fun fetchSpell(itemId: Int): Block?{
+        val query = "SELECT Name, Ing, Plevel, Ctime, Dtime, Desc, Tra, Id FROM spells WHERE Id=$itemId"
         val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
-        var code: String = ""
+        var block: Block? = null
         if(cursor.moveToFirst()){
-            code = cursor.getString(0)
+            block = Block(cursor.getString(0), cursor.getString(5), cursor.getString(1), cursor.getString(6), cursor.getString(3), cursor.getString(4), cursor.getInt(2), cursor.getInt(7))
         }
         cursor.close()
-        return code
+        return block
+    }
+
+    fun addProject(name: String): Int{
+        val query = "SELECT MAX(Id) FROM spellbooks"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+        var id = 0
+        if(cursor.moveToFirst()) {
+            id = cursor.getInt(0)
+        }
+        saveProject(Project(name, id))
+
+        return id
     }
 
     fun saveProject(project: Project){
         val db = this.writableDatabase
         var values = ContentValues()
         db.beginTransaction()
-        values.put("_id", project.projectId)
+        values.put("Id", project.projectId)
         values.put("Name", project.name)
-        if(project.active)
-            values.put("Active", 1)
-        else
-            values.put("Active", 0)
-        values.put("LastAccessed", 0)
 
-        db.delete("Inventories", "_id=${project.projectId}", null)
+        db.delete("spellbooks", "Id=${project.projectId}", null)
 
-        db.insert("Inventories", null, values)
+        db.insert("spellbooks", null, values)
 
-        db.delete("InventoriesParts", "InventoryID=${project.projectId}", null)
+        db.delete("spells_spellbooks", "Id_spellbook=${project.projectId}", null)
 
         for(block in project.listOfNeededBlocks){
             values = ContentValues()
-            values.put("_id", getId("InventoriesParts") )
-            values.put("InventoryID", project.projectId)
-            values.put("TypeID", block.blockTypeCode)
-            values.put("ItemID", block.blockIdCode)
-            values.put("QuantityInSet", block.maxNumber)
-            values.put("QuantityInStore", block.actualNumber)
-            values.put("ColorID", block.colorCode)
-            values.put("Extra", 0)
-            db.insert("InventoriesParts", null, values)
+            values.put("Id_spell", block.id)
+            values.put("Id_spellbook", project.projectId)
+            db.insert("spells_spellbooks", null, values)
         }
         db.setTransactionSuccessful()
         db.endTransaction()
     }
 
-    fun getREALBlockId(fakeId: String): Int{
-        val query = "SELECT _id FROM Parts WHERE Code LIKE \"$fakeId\""
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        return if(cursor.moveToFirst()) cursor.getInt(0) else -1
-    }
-
-    fun getId(whichTable: String): Int{
-        val query = "SELECT max(_id) FROM $whichTable;"
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(query, null)
-        var lastId = 0
-        if (cursor.moveToFirst()) {
-            lastId = cursor.getInt(0)
-        }
-        cursor.close()
-        return lastId+1
-    }
-
-    fun addProjectFromUrl(name: String, url: String, c: Context): Int{
-        val newProject = Project(name, getId("Inventories"), 1)
-        newProject.makeProjectFromLink(url, c)
-
-        saveProject(newProject)
-
-        return newProject.projectId
-    }
-
     fun loadProject(id: Int): Project{
         val db = this.readableDatabase
-        val queryItems = "SELECT * FROM InventoriesParts WHERE InventoryID=$id"
+        val queryItems = "SELECT Id_spell FROM spells_spellbooks WHERE Id_spellbook=$id"
         var cursor = db.rawQuery(queryItems, null)
         var blocks = ObservableArrayList<Block>()
 
         cursor.moveToFirst()
-        var blockId = getREALBlockId(cursor.getString(3))
-        blocks.add(Block(fetchName(cursor.getString(3)), fetchTypeName(cursor.getString(2)), cursor.getInt(6), cursor.getString(3), cursor.getString(2), cursor.getInt(5), cursor.getInt(4), fetchColorName(cursor.getInt(6)),fetchCode(blockId, cursor.getInt(6))))
+        blocks.add(fetchSpell(cursor.getInt(0)))
         while(cursor.moveToNext()){
-            blockId = getREALBlockId(cursor.getString(3))
-            blocks.add(Block(fetchName(cursor.getString(3)), fetchTypeName(cursor.getString(2)), cursor.getInt(6), cursor.getString(3), cursor.getString(2), cursor.getInt(5), cursor.getInt(4), fetchColorName(cursor.getInt(6)),fetchCode(blockId, cursor.getInt(6))))
+            blocks.add(fetchSpell(cursor.getInt(0)))
         }
         cursor.close()
 
-        val queryProject = "SELECT * FROM Inventories WHERE _id=$id"
+        val queryProject = "SELECT * FROM spellbooks WHERE Id=$id"
         cursor = db.rawQuery(queryProject, null)
         cursor.moveToFirst()
-        var loadedProject = Project(cursor.getString(1), cursor.getInt(0), cursor.getInt(2))
+        var loadedProject = Project(cursor.getString(1), cursor.getInt(0))
         loadedProject.listOfNeededBlocks = blocks
 
         cursor.close()

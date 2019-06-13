@@ -36,6 +36,5 @@ class ImageAsyncDownloader: AsyncTask<String, Void, Bitmap> {
 
     override fun onPostExecute(result: Bitmap?) {
         bmImage.setImageBitmap(result)
-        block.bitmap = result
     }
 }

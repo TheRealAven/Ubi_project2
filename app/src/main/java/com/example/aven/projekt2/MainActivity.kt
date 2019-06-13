@@ -16,8 +16,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), OnDialogInputListener {
 
-    override fun onInput(nameInput: String, urlInput: String) {
-        var newProjectId = db.addProjectFromUrl(nameInput,urlInput,this)
+    override fun onInput(nameInput: String) {
+        var newProjectId = db.addProject(nameInput)
         openProject(newProjectId)
     }
 
@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity(), OnDialogInputListener {
 
         listView.setOnItemClickListener { parent, view, i, l ->
             var item = listView.getItemAtPosition(i) as Project
-            if(item.active)
-                openProject(item.projectId)
+            openProject(item.projectId)
         }
 
         fab.setOnClickListener{

@@ -21,7 +21,6 @@ class ProjectListAdapter: ArrayAdapter<Project> {
     // View lookup cache
     private class ViewHolder {
         internal var txtName: TextView? = null
-        internal var txtState: TextView? = null
     }
 
     constructor(data: ObservableArrayList<Project>, context: Context):super(context, R.layout.project_element_layout, data) {
@@ -31,7 +30,7 @@ class ProjectListAdapter: ArrayAdapter<Project> {
         var sort: Boolean = true
         sharedPref.getBoolean("pref_active", sort)
         if(sort){
-            dataSet.sortWith(compareBy { !it.active })
+            dataSet.sortWith(compareBy { it.name })
         }
     }
 
@@ -50,7 +49,7 @@ class ProjectListAdapter: ArrayAdapter<Project> {
         sharedPref.getBoolean("pref_active", sort)
 
         if(sort){
-            dataSet.sortWith(compareBy { !it.active })
+            dataSet.sortWith(compareBy { it.name })
         }
 
         if (convertView == null) {
@@ -59,7 +58,6 @@ class ProjectListAdapter: ArrayAdapter<Project> {
             val inflater = LayoutInflater.from(context)
             convertView = inflater.inflate(R.layout.project_element_layout, parent, false)
             viewHolder.txtName = convertView!!.findViewById(R.id.nameEdit)
-            viewHolder.txtState = convertView!!.findViewById(R.id.totalState)
 
             convertView!!.setTag(viewHolder)
         } else {
@@ -68,13 +66,6 @@ class ProjectListAdapter: ArrayAdapter<Project> {
 
         lastPosition = position
 
-        if((sort)&&(!dataModel!!.active)){
-            viewHolder.txtName!!.setText("")
-            viewHolder.txtState!!.setText("")
-        }else{
-            viewHolder.txtName!!.setText(dataModel!!.name)
-            viewHolder.txtState!!.setText("State: ${dataModel!!.getState()}")
-        }
         // Return the completed view to render on screen
         return convertView
     }
