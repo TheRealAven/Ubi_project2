@@ -12,7 +12,7 @@
         android:layout_height="25dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:text="Name"
+        android:text="Nazwa:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
-        android:text="Ing" />
+        android:text="Składniki czaru:" />
 
     <TextView
         android:id="@+id/ctime"
@@ -34,7 +34,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
-        android:text="Ctime " />
+        android:text="Czas rzucania:" />
 
     <TextView
         android:id="@+id/dtime"
@@ -44,7 +44,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="214dp"
         android:layout_marginTop="89dp"
-        android:text="Dtime " />
+        android:text="Czas trwania:" />
 
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
-        android:text="Plevel " />
+        android:text="Poziom mocy:" />
 
     <TextView
         android:id="@+id/tra"
@@ -64,7 +64,7 @@
         android:layout_below="@+id/dtime"
         android:layout_marginTop="13dp"
         android:layout_marginStart="224dp"
-        android:text="Tra " />
+        android:text="Tradycja:" />
 
     <TextView
         android:id="@+id/desc"
@@ -73,5 +73,5 @@
         android:layout_below="@+id/plevel"
         android:layout_marginTop="13dp"
         android:layout_marginStart="10dp"
-        android:text="Desc " />
+        android:text="Opis:" />
 </RelativeLayout>
