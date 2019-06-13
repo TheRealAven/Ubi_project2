@@ -156,8 +156,16 @@ class DatabaseManager: SQLiteOpenHelper {
     // to you to create adapters for your views.
 
     fun fetchProjects(): ObservableArrayList<Project>{
-        val query = "SELECT * FROM spellbooks"
         val db = this.readableDatabase
+        val cursor2 = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'", null)
+        if(cursor2.moveToFirst()) {
+            var x = cursor2.getString(0)
+        }
+        while(cursor2.moveToNext()){
+            var x = cursor2.getString(0)
+        }
+        cursor2.close()
+        val query = "SELECT * FROM Spellbooks"
         val cursor = db.rawQuery(query, null)
         var tempList = ObservableArrayList<Project>()
         if(cursor.moveToFirst()) {
@@ -171,7 +179,7 @@ class DatabaseManager: SQLiteOpenHelper {
     }
 
     fun fetchSpell(itemId: Int): Block?{
-        val query = "SELECT Name, Ing, Plevel, Ctime, Dtime, Desc, Tra, Id FROM spells WHERE Id=$itemId"
+        val query = "SELECT Name, Ing, Plevel, Ctime, Dtime, Opis, Tra, Id FROM spells WHERE Id=$itemId"
         val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         var block: Block? = null
@@ -218,14 +226,30 @@ class DatabaseManager: SQLiteOpenHelper {
         db.endTransaction()
     }
 
+    fun getAllBlocks(): ObservableArrayList<MiniBlock> {
+        val query = "SELECT Name, Id FROM spells"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+        var spells = ObservableArrayList<MiniBlock>()
+        if(cursor.moveToFirst()){
+            spells.add(MiniBlock(cursor.getInt(1), cursor.getString(0)))
+        }
+        while (cursor.moveToNext()){
+            spells.add(MiniBlock(cursor.getInt(1), cursor.getString(0)))
+        }
+        cursor.close()
+        return spells
+    }
+
     fun loadProject(id: Int): Project{
         val db = this.readableDatabase
         val queryItems = "SELECT Id_spell FROM spells_spellbooks WHERE Id_spellbook=$id"
         var cursor = db.rawQuery(queryItems, null)
         var blocks = ObservableArrayList<Block>()
 
-        cursor.moveToFirst()
-        blocks.add(fetchSpell(cursor.getInt(0)))
+        if(cursor.moveToFirst()) {
+            blocks.add(fetchSpell(cursor.getInt(0)))
+        }
         while(cursor.moveToNext()){
             blocks.add(fetchSpell(cursor.getInt(0)))
         }

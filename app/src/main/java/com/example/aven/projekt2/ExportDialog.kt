@@ -2,6 +2,7 @@ package com.example.aven.projekt2
 
 import android.app.DialogFragment
 import android.content.Context
+import android.databinding.ObservableArrayList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.dialog_layout.*
 class ExportDialog: DialogFragment() {
     val TAG: String = "DialogExportFragment"
 
+    var adapter: MiniBlockListAdapter? = null
+
     interface OnExportDialogInputListener{
         fun onInput(nameInput: String)
     }
@@ -23,6 +26,7 @@ class ExportDialog: DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         var view = inflater!!.inflate(R.layout.dialog_export_layout, container, false)
 
+        adapter = MiniBlockListAdapter(DatabaseManager(view.context).getAllBlocks(), view.context)
 
         view.findViewById<Button>(R.id.buttonNo).setOnClickListener {
             dialog.dismiss()

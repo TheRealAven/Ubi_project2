@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/blockName"
-        android:layout_width="94dp"
-        android:layout_height="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="Nazwa:"
@@ -40,10 +40,10 @@
         android:id="@+id/dtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ctime"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="214dp"
-        android:layout_marginTop="89dp"
+        android:layout_below="@+id/plevel"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
         android:text="Czas trwania:" />
 
 
@@ -63,14 +63,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dtime"
         android:layout_marginTop="13dp"
-        android:layout_marginStart="224dp"
+        android:layout_marginStart="10dp"
         android:text="Tradycja:" />
 
     <TextView
         android:id="@+id/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/plevel"
+        android:layout_below="@+id/tra"
         android:layout_marginTop="13dp"
         android:layout_marginStart="10dp"
         android:text="Opis:" />

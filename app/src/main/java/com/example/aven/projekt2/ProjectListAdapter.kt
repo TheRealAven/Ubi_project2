@@ -64,6 +64,8 @@ class ProjectListAdapter: ArrayAdapter<Project> {
             viewHolder = convertView!!.tag as ViewHolder
         }
 
+        viewHolder.txtName!!.setText(dataModel.name)
+
         lastPosition = position
 
         // Return the completed view to render on screen

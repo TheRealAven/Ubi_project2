@@ -69,13 +69,13 @@ class BlockListAdapter: ArrayAdapter<Block> {
 
         lastPosition = position
 
-        viewHolder.txtName!!.setText(dataModel!!.nazwa)
-        viewHolder.txtCTime!!.setText(dataModel!!.ctime)
-        viewHolder.txtDTime!!.setText(dataModel!!.dtime)
-        viewHolder.txtOpis!!.setText(dataModel!!.opis)
-        viewHolder.txtTra!!.setText(dataModel!!.tradycja)
-        viewHolder.txtIng!!.setText(dataModel!!.koszt)
-        viewHolder.txtPlevel!!.setText(dataModel!!.plevel)
+        viewHolder.txtName!!.setText("Nazwa: ${dataModel!!.nazwa}")
+        viewHolder.txtCTime!!.setText("Czas rzucania: ${dataModel!!.ctime}")
+        viewHolder.txtDTime!!.setText("Czas trwania: ${dataModel!!.dtime}")
+        viewHolder.txtOpis!!.setText("Opis: ${dataModel!!.opis}")
+        viewHolder.txtTra!!.setText("Tradycja: ${dataModel!!.tradycja}")
+        viewHolder.txtIng!!.setText("Składniki czaru: ${dataModel!!.koszt}")
+        viewHolder.txtPlevel!!.setText("Poziom mocy: ${dataModel!!.plevel}")
 
 
         // Return the completed view to render on screen
