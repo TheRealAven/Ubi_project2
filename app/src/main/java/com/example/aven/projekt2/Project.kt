@@ -14,4 +14,8 @@ class Project(n: String, id: Int) {
     fun addBlock(b: Block){
         listOfNeededBlocks.add(b)
     }
+
+    fun removeBlockAt(i: Int){
+        listOfNeededBlocks.removeAt(i)
+    }
 }

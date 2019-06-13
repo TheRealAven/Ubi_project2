@@ -2,6 +2,7 @@ package com.example.aven.projekt2
 
 import android.databinding.adapters.TextViewBindingAdapter.setText
 import android.content.Context
+import android.databinding.ObservableArrayList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import android.widget.*
  */
 class MiniBlockListAdapter: ArrayAdapter<MiniBlock> {
 
-    private val dataSet: ArrayList<MiniBlock>
+    private val dataSet: ObservableArrayList<MiniBlock>
     var mContext: Context
 
     // View lookup cache
@@ -22,7 +23,7 @@ class MiniBlockListAdapter: ArrayAdapter<MiniBlock> {
         internal var txtId: TextView? = null
     }
 
-    constructor(data: ArrayList<MiniBlock>, context: Context):super(context, R.layout.miniblock_layout, data) {
+    constructor(data: ObservableArrayList<MiniBlock>, context: Context):super(context, R.layout.miniblock_layout, data) {
         this.dataSet = data
         this.mContext = context
     }
@@ -51,11 +52,15 @@ class MiniBlockListAdapter: ArrayAdapter<MiniBlock> {
         lastPosition = position
 
         viewHolder.txtName!!.setText("Nazwa: ${dataModel!!.nazwa}")
-        viewHolder.txtId!!.setText("Nazwa: ${dataModel!!.id}")
+        viewHolder.txtId!!.setText("ID: ${dataModel!!.id}")
 
 
         // Return the completed view to render on screen
         return convertView
+    }
+
+    fun getMiniblockId(pos: Int): Int{
+        return dataSet.get(pos).id
     }
 
 }

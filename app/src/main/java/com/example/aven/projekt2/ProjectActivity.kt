@@ -45,14 +45,22 @@ class ProjectActivity() : AppCompatActivity(), ExportDialog.OnExportDialogInputL
 
         projectElementsList.adapter=adapter
 
+        projectElementsList.setOnItemLongClickListener { adapterView, view, i, l ->
+            currentProject!!.removeBlockAt(i)
+            adapter?.notifyDataSetChanged()
+            true
+        }
+
         fabExport.setOnClickListener{
             var dialog = ExportDialog()
+            dialog.adapter = MiniBlockListAdapter(db.getAllBlocks(), this)
             dialog.show(fragmentManager, "ExportDialog")
         }
     }
 
     override fun onInput(nameInput: String) {
         currentProject!!.addBlock(db.fetchSpell(nameInput.toInt())?: Block())
+        adapter!!.notifyDataSetChanged()
     }
 
     override fun finish() {

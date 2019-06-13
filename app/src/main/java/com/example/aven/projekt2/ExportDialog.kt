@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ListView
+import kotlinx.android.synthetic.main.dialog_export_layout.*
 import kotlinx.android.synthetic.main.dialog_layout.*
+import kotlinx.android.synthetic.main.dialog_layout.nameEdit
 
 /**
  * Created by Aven on 2018-05-29.
@@ -26,18 +29,23 @@ class ExportDialog: DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         var view = inflater!!.inflate(R.layout.dialog_export_layout, container, false)
 
-        adapter = MiniBlockListAdapter(DatabaseManager(view.context).getAllBlocks(), view.context)
+        view.findViewById<ListView>(R.id.allSpellsList).adapter = adapter
+        view.findViewById<ListView>(R.id.allSpellsList).setOnItemClickListener { adapterView, view, i, l ->
+            listener?.onInput(adapter!!.getMiniblockId(i).toString())
+
+            dialog.dismiss()
+        }
 
         view.findViewById<Button>(R.id.buttonNo).setOnClickListener {
             dialog.dismiss()
         }
 
-        view.findViewById<Button>(R.id.buttonYes).setOnClickListener {
-            var name = nameEdit.text.toString()
-            listener?.onInput(name)
-
-            dialog.dismiss()
-        }
+//        view.findViewById<Button>(R.id.buttonYes).setOnClickListener {
+//            var name = nameEdit.text.toString()
+//            listener?.onInput(name)
+//
+//            dialog.dismiss()
+//        }
 
         return view
     }
